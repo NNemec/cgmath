@@ -112,8 +112,8 @@ macro_rules! impl_vector {
             /// applying the given operation to each pair of components of the
             /// given vectors.
             #[inline]
-            pub fn zip<S2, S3, F>(self, v2: $VectorN<S2>, mut f: F) -> $VectorN<S3>
-                where F: FnMut(S, S2) -> S3
+            pub fn zip<S2, U, F>(self, v2: $VectorN<S2>, mut f: F) -> $VectorN<U>
+                where F: FnMut(S, S2) -> U
             {
                 $VectorN { $($field: f(self.$field, v2.$field)),+ }
             }
