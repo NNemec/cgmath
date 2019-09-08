@@ -151,11 +151,11 @@ macro_rules! fold_array {
 
 /// Generate array conversion implementations for a compound array type
 macro_rules! impl_fixed_array_conversions {
-    ($ArrayN:ident <$S:ident> { $($field:ident : $index:expr),+ }, $n:expr) => {
+    ($ArrayN:ident <$S:ident> { $($field:ident : $index:expr),+ $(; $pad:ident )* }, $n:expr) => {
         impl<$S> Into<[$S; $n]> for $ArrayN<$S> {
             #[inline]
             fn into(self) -> [$S; $n] {
-                match self { $ArrayN { $($field),+ } => [$($field),+] }
+                match self { $ArrayN { $($field),+ $(, $pad)* } => [$($field),+] }
             }
         }
 
@@ -173,11 +173,11 @@ macro_rules! impl_fixed_array_conversions {
             }
         }
 
-        impl<$S: Clone> From<[$S; $n]> for $ArrayN<$S> {
+        impl<$S: Clone + Zero> From<[$S; $n]> for $ArrayN<$S> {
             #[inline]
             fn from(v: [$S; $n]) -> $ArrayN<$S> {
                 // We need to use a clone here because we can't pattern match on arrays yet
-                $ArrayN { $($field: v[$index].clone()),+ }
+                $ArrayN { $($field: v[$index].clone()),+ $(, $pad: $S::zero())* }
             }
         }
 
@@ -199,11 +199,11 @@ macro_rules! impl_fixed_array_conversions {
 
 /// Generate homogeneous tuple conversion implementations for a compound array type
 macro_rules! impl_tuple_conversions {
-    ($ArrayN:ident <$S:ident> { $($field:ident),+ }, $Tuple:ty) => {
+    ($ArrayN:ident <$S:ident> { $($field:ident),+ $(; $pad:ident )* }, $Tuple:ty) => {
         impl<$S> Into<$Tuple> for $ArrayN<$S> {
             #[inline]
             fn into(self) -> $Tuple {
-                match self { $ArrayN { $($field),+ } => ($($field),+,) }
+                match self { $ArrayN { $($field),+ $(, $pad)* } => ($($field),+,) }
             }
         }
 
@@ -221,10 +221,10 @@ macro_rules! impl_tuple_conversions {
             }
         }
 
-        impl<$S> From<$Tuple> for $ArrayN<$S> {
+        impl<$S: Zero> From<$Tuple> for $ArrayN<$S> {
             #[inline]
             fn from(v: $Tuple) -> $ArrayN<$S> {
-                match v { ($($field),+,) => $ArrayN { $($field: $field),+ } }
+                match v { ($($field),+,) => $ArrayN { $($field: $field),+ $(, $pad: $S::zero())*} }
             }
         }
 

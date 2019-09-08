@@ -70,6 +70,8 @@ pub struct Vector3<S> {
     pub y: S,
     /// The z component of the vector.
     pub z: S,
+    /// padding to fill all SIMD components
+    _w: S,
 }
 
 /// A 4-dimensional vector.
@@ -91,12 +93,12 @@ pub struct Vector4<S> {
 
 // Utility macro for generating associated functions for the vectors
 macro_rules! impl_vector {
-    ($VectorN:ident { $($field:ident),+ }, $n:expr, $constructor:ident) => {
-        impl<S> $VectorN<S> {
+    ($VectorN:ident { $($field:ident),+ $(; $pad:ident )* }, $n:expr, $constructor:ident) => {
+        impl<S: Zero> $VectorN<S> {
             /// Construct a new vector, using the provided values.
             #[inline]
             pub const fn new($($field: S),+) -> $VectorN<S> {
-                $VectorN { $($field: $field),+ }
+                $VectorN { $($field: $field),+ $(, $pad: S::zero())* }
             }
 
             /// Perform the given operation on each field in the vector, returning a new point
@@ -105,7 +107,7 @@ macro_rules! impl_vector {
             pub fn map<U, F>(self, mut f: F) -> $VectorN<U>
                 where F: FnMut(S) -> U
             {
-                $VectorN { $($field: f(self.$field)),+ }
+                $VectorN { $($field: f(self.$field)),+ $(, $pad: f(self.$pad))* }
             }
 
             #[inline]
@@ -122,7 +124,7 @@ macro_rules! impl_vector {
             pub fn zip<S2, U, F>(self, v2: $VectorN<S2>, mut f: F) -> $VectorN<U>
                 where F: FnMut(S, S2) -> U
             {
-                $VectorN { $($field: f(self.$field, v2.$field)),+ }
+                $VectorN { $($field: f(self.$field, v2.$field)),+ $(, $pad: f(self.$pad, v2.$pad))* }
             }
 
             /// For each pair of components of the given vectors, apply the given operation, modifing self.
@@ -136,21 +138,21 @@ macro_rules! impl_vector {
 
         /// The short constructor.
         #[inline]
-        pub const fn $constructor<S>($($field: S),+) -> $VectorN<S> {
+        pub const fn $constructor<S: Zero>($($field: S),+) -> $VectorN<S> {
             $VectorN::new($($field),+)
         }
 
         impl<S: NumCast + Copy> $VectorN<S> {
             /// Component-wise casting to another type.
             #[inline]
-            pub fn cast<T: NumCast>(&self) -> Option<$VectorN<T>> {
+            pub fn cast<T: NumCast + Zero>(&self) -> Option<$VectorN<T>> {
                 $(
                     let $field = match NumCast::from(self.$field) {
                         Some(field) => field,
                         None => return None
                     };
                 )+
-                Some($VectorN { $($field: $field),+ })
+                Some($VectorN { $($field: $field),+ $(, $pad: T::zero())*  })
             }
         }
 
@@ -163,7 +165,7 @@ macro_rules! impl_vector {
             }
         }
 
-        impl<S: Copy> Array for $VectorN<S> {
+        impl<S: Copy+Zero> Array for $VectorN<S> {
             type Element = S;
 
             #[inline]
@@ -173,7 +175,7 @@ macro_rules! impl_vector {
 
             #[inline]
             fn from_value(scalar: S) -> $VectorN<S> {
-                $VectorN { $($field: scalar),+ }
+                $VectorN { $($field: scalar),+ $(, $pad: S::zero())* }
             }
 
             #[inline]
@@ -221,7 +223,7 @@ macro_rules! impl_vector {
             type Scalar = S;
         }
 
-        impl<S: Neg<Output = S>> Neg for $VectorN<S> {
+        impl<S: Neg<Output = S>+Zero> Neg for $VectorN<S> {
             type Output = $VectorN<S>;
 
             #[inline]
@@ -276,15 +278,15 @@ macro_rules! impl_vector {
             }
         }
 
-        impl<S: Bounded> Bounded for $VectorN<S> {
+        impl<S: Bounded + Zero> Bounded for $VectorN<S> {
             #[inline]
             fn min_value() -> $VectorN<S> {
-                $VectorN { $($field: S::min_value()),+ }
+                $VectorN { $($field: S::min_value()),+ $(, $pad: S::zero() )* }
             }
 
             #[inline]
             fn max_value() -> $VectorN<S> {
-                $VectorN { $($field: S::max_value()),+ }
+                $VectorN { $($field: S::max_value()),+ $(, $pad: S::zero() )* }
             }
         }
 
@@ -388,17 +390,17 @@ macro_rules! impl_scalar_ops {
 
 impl_vector!(Vector1 { x }, 1, vec1);
 impl_vector!(Vector2 { x, y }, 2, vec2);
-impl_vector!(Vector3 { x, y, z }, 3, vec3);
+impl_vector!(Vector3 { x, y, z ; _w }, 3, vec3);
 impl_vector!(Vector4 { x, y, z, w }, 4, vec4);
 
 impl_fixed_array_conversions!(Vector1<S> { x: 0 }, 1);
 impl_fixed_array_conversions!(Vector2<S> { x: 0, y: 1 }, 2);
-impl_fixed_array_conversions!(Vector3<S> { x: 0, y: 1, z: 2 }, 3);
+impl_fixed_array_conversions!(Vector3<S> { x: 0, y: 1, z: 2 ; _w }, 3);
 impl_fixed_array_conversions!(Vector4<S> { x: 0, y: 1, z: 2, w: 3 }, 4);
 
 impl_tuple_conversions!(Vector1<S> { x }, (S,));
 impl_tuple_conversions!(Vector2<S> { x, y }, (S, S));
-impl_tuple_conversions!(Vector3<S> { x, y, z }, (S, S, S));
+impl_tuple_conversions!(Vector3<S> { x, y, z ; _w }, (S, S, S));
 impl_tuple_conversions!(Vector4<S> { x, y, z, w }, (S, S, S, S));
 
 impl<S: BaseNum> Vector1<S> {

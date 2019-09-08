@@ -52,7 +52,7 @@ pub struct Quaternion<S> {
     pub v: Vector3<S>,
 }
 
-impl<S> Quaternion<S> {
+impl<S: Zero> Quaternion<S> {
     /// Construct a new quaternion from one scalar component and three
     /// imaginary components.
     #[inline]
@@ -573,12 +573,8 @@ impl<'a, S: BaseFloat> From<&'a mut [S; 4]> for &'a mut Quaternion<S> {
 impl<S: BaseFloat> Into<(S, S, S, S)> for Quaternion<S> {
     #[inline]
     fn into(self) -> (S, S, S, S) {
-        match self {
-            Quaternion {
-                s,
-                v: Vector3 { x, y, z },
-            } => (s, x, y, z),
-        }
+        let (x,y,z) = self.v.into();
+        (self.s, x, y, z)
     }
 }
 
