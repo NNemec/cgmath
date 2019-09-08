@@ -54,6 +54,8 @@
 
 #![cfg_attr(feature = "repr_simd", feature(repr_simd))]
 
+#![feature(const_fn)]
+
 #[macro_use]
 extern crate approx;
 
