@@ -45,7 +45,7 @@ macro_rules! impl_operator {
             type Output = $Output;
             #[inline]
             default_fn!($op(self) -> $Output {
-                let $x = self; $body
+                let $x = *self; $body
             });
         }
     };
@@ -65,7 +65,7 @@ macro_rules! impl_operator {
             type Output = $Output;
             #[inline]
             default_fn!($op(self, other: $Rhs) -> $Output {
-                let ($lhs, $rhs) = (self, other); $body
+                let ($lhs, $rhs) = (*self, other); $body
             });
         }
     };
@@ -85,7 +85,7 @@ macro_rules! impl_operator {
             type Output = $Output;
             #[inline]
             default_fn!( $op(self, other: &'a $Rhs) -> $Output {
-                let ($lhs, $rhs) = (self, other); $body
+                let ($lhs, $rhs) = (self, *other); $body
             });
         }
 
@@ -93,7 +93,7 @@ macro_rules! impl_operator {
             type Output = $Output;
             #[inline]
             default_fn!( $op(self, other: $Rhs) -> $Output {
-                let ($lhs, $rhs) = (self, other); $body
+                let ($lhs, $rhs) = (*self, other); $body
             });
         }
 
@@ -101,7 +101,7 @@ macro_rules! impl_operator {
             type Output = $Output;
             #[inline]
             default_fn!( $op(self, other: &'a $Rhs) -> $Output {
-                let ($lhs, $rhs) = (self, other); $body
+                let ($lhs, $rhs) = (*self, *other); $body
             });
         }
     };
@@ -121,7 +121,7 @@ macro_rules! impl_operator {
             type Output = $Output;
             #[inline]
             default_fn!( $op(self, other: &'a $Rhs<$S>) -> $Output {
-                let ($lhs, $rhs) = (self, other); $body
+                let ($lhs, $rhs) = (self, *other); $body
             });
         }
     };
