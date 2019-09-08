@@ -14,10 +14,9 @@
 	.p2align	4, 0x90
 snippet_vector4_add:
 	movq	%rcx, %rax
-	movups	(%rdx), %xmm0
-	movups	(%r8), %xmm1
-	addps	%xmm0, %xmm1
-	movups	%xmm1, (%rcx)
+	movaps	(%rdx), %xmm0
+	addps	(%r8), %xmm0
+	movaps	%xmm0, (%rcx)
 	retq
 
 	.def	 snippet_ref_vector4_sub;
@@ -29,10 +28,9 @@ snippet_vector4_add:
 	.p2align	4, 0x90
 snippet_ref_vector4_sub:
 	movq	%rcx, %rax
-	movups	(%rdx), %xmm0
-	movups	(%r8), %xmm1
-	subps	%xmm1, %xmm0
-	movups	%xmm0, (%rcx)
+	movaps	(%rdx), %xmm0
+	subps	(%r8), %xmm0
+	movaps	%xmm0, (%rcx)
 	retq
 
 	.def	 snippet_m128_mul;

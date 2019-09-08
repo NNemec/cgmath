@@ -33,8 +33,8 @@ use mint;
 
 /// A point in 1-dimensional space.
 ///
-/// This type is marked as `#[repr(C)]`.
-#[repr(C)]
+/// This type is marked as `#[repr(simd)]`.
+#[cfg_attr(feature = "repr_simd", repr(simd))]
 #[derive(PartialEq, Eq, Copy, Clone, Hash)]
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 pub struct Point1<S> {
@@ -43,8 +43,8 @@ pub struct Point1<S> {
 
 /// A point in 2-dimensional space.
 ///
-/// This type is marked as `#[repr(C)]`.
-#[repr(C)]
+/// This type is marked as `#[repr(simd)]`.
+#[cfg_attr(feature = "repr_simd", repr(simd))]
 #[derive(PartialEq, Eq, Copy, Clone, Hash)]
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 pub struct Point2<S> {
@@ -54,8 +54,8 @@ pub struct Point2<S> {
 
 /// A point in 3-dimensional space.
 ///
-/// This type is marked as `#[repr(C)]`.
-#[repr(C)]
+/// This type is marked as `#[repr(simd)]`.
+#[cfg_attr(feature = "repr_simd", repr(simd))]
 #[derive(PartialEq, Eq, Copy, Clone, Hash)]
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 pub struct Point3<S> {
