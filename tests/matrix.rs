@@ -201,20 +201,20 @@ pub mod matrix2 {
 pub mod matrix3 {
     use cgmath::*;
 
-    const A: Matrix3<f64> = Matrix3 { x: Vector3 { x: 1.0f64, y: 4.0f64, z:  7.0f64 },
-                                      y: Vector3 { x: 2.0f64, y: 5.0f64, z:  8.0f64 },
-                                      z: Vector3 { x: 3.0f64, y: 6.0f64, z:  9.0f64 } };
-    const B: Matrix3<f64> = Matrix3 { x: Vector3 { x: 2.0f64, y: 5.0f64, z:  8.0f64 },
-                                      y: Vector3 { x: 3.0f64, y: 6.0f64, z:  9.0f64 },
-                                      z: Vector3 { x: 4.0f64, y: 7.0f64, z: 10.0f64 } };
-    const C: Matrix3<f64> = Matrix3 { x: Vector3 { x: 2.0f64, y: 4.0f64, z:  6.0f64 },
-                                      y: Vector3 { x: 0.0f64, y: 2.0f64, z:  4.0f64 },
-                                      z: Vector3 { x: 0.0f64, y: 0.0f64, z:  1.0f64 } };
-    const D: Matrix3<f64> = Matrix3 { x: Vector3 { x: 3.0f64, y: 2.0f64, z:  1.0f64 },
-                                      y: Vector3 { x: 2.0f64, y: 3.0f64, z:  2.0f64 },
-                                      z: Vector3 { x: 1.0f64, y: 2.0f64, z:  3.0f64 } };
+    const A: Matrix3<f64> = Matrix3 { x: Vector3::new( 1.0f64, 4.0f64,  7.0f64 ),
+                                      y: Vector3::new( 2.0f64, 5.0f64,  8.0f64 ),
+                                      z: Vector3::new( 3.0f64, 6.0f64,  9.0f64 ) };
+    const B: Matrix3<f64> = Matrix3 { x: Vector3::new( 2.0f64, 5.0f64,  8.0f64 ),
+                                      y: Vector3::new( 3.0f64, 6.0f64,  9.0f64 ),
+                                      z: Vector3::new( 4.0f64, 7.0f64, 10.0f64 ) };
+    const C: Matrix3<f64> = Matrix3 { x: Vector3::new( 2.0f64, 4.0f64,  6.0f64 ),
+                                      y: Vector3::new( 0.0f64, 2.0f64,  4.0f64 ),
+                                      z: Vector3::new( 0.0f64, 0.0f64,  1.0f64 ) };
+    const D: Matrix3<f64> = Matrix3 { x: Vector3::new( 3.0f64, 2.0f64,  1.0f64 ),
+                                      y: Vector3::new( 2.0f64, 3.0f64,  2.0f64 ),
+                                      z: Vector3::new( 1.0f64, 2.0f64,  3.0f64 ) };
 
-    const V: Vector3<f64> = Vector3 { x: 1.0f64, y: 2.0f64, z:  3.0f64 };
+    const V: Vector3<f64> = Vector3::new( 1.0f64, 2.0f64, 3.0f64 );
     const F: f64 = 0.5;
 
     #[test]

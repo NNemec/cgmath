@@ -679,11 +679,11 @@ mod tests {
 
     const QUATERNION: Quaternion<f32> = Quaternion {
         s: 1.0,
-        v: Vector3 {
-            x: 2.0,
-            y: 3.0,
-            z: 4.0,
-        },
+        v: Vector3::new(
+            2.0,
+            3.0,
+            4.0,
+        ),
     };
 
     #[test]

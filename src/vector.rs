@@ -742,7 +742,7 @@ mod tests {
     mod vector3 {
         use vector::*;
 
-        const VECTOR3: Vector3<i32> = Vector3 { x: 1, y: 2, z: 3 };
+        const VECTOR3: Vector3<i32> = Vector3::new( 1, 2, 3 );
 
         #[test]
         fn test_index() {
