@@ -135,7 +135,7 @@ macro_rules! impl_vector {
                         None => return None
                     };
                 )+
-                Some($VectorN { $($field),+ })
+                Some($VectorN { $($field: $field),+ })
             }
         }
 
