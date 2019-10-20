@@ -20,9 +20,23 @@ use std::ops::*;
 
 use num_traits::{Float, Num, NumCast};
 
+pub trait ZeroPad:
+    Default
+{
+    fn zeropad() -> Self;
+}
+
+impl<T> ZeroPad for T
+where
+    T: Default
+{
+    fn zeropad() -> Self { T::default() }
+}
+
 /// Base numeric types with partial ordering
 pub trait BaseNum:
-    Copy
+    ZeroPad
+    + Copy
     + Clone
     + fmt::Debug
     + Num
@@ -38,7 +52,8 @@ pub trait BaseNum:
 
 impl<T> BaseNum for T
 where
-    T: Copy
+    T: ZeroPad
+        + Copy
         + Clone
         + fmt::Debug
         + Num

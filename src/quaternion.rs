@@ -30,7 +30,7 @@ use angle::Rad;
 use approx;
 use euler::Euler;
 use matrix::{Matrix3, Matrix4};
-use num::BaseFloat;
+use num::{BaseFloat, ZeroPad};
 use point::Point3;
 use rotation::{Basis3, Rotation, Rotation3};
 use vector::Vector3;
@@ -52,7 +52,7 @@ pub struct Quaternion<S> {
     pub v: Vector3<S>,
 }
 
-impl<S: Zero> Quaternion<S> {
+impl<S: ZeroPad> Quaternion<S> {
     /// Construct a new quaternion from one scalar component and three
     /// imaginary components.
     #[inline]

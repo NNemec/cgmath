@@ -25,7 +25,7 @@ use std::ops::*;
 use structure::*;
 
 use approx;
-use num::{BaseFloat, BaseNum};
+use num::{BaseFloat, BaseNum, ZeroPad};
 use vector::{Vector1, Vector2, Vector3, Vector4};
 
 #[cfg(feature = "mint")]

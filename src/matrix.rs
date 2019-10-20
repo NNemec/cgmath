@@ -30,7 +30,7 @@ use structure::*;
 use angle::Rad;
 use approx;
 use euler::Euler;
-use num::BaseFloat;
+use num::{BaseFloat, ZeroPad};
 use point::{Point2, Point3};
 use quaternion::Quaternion;
 use transform::{Transform, Transform2, Transform3};
@@ -84,7 +84,7 @@ pub struct Matrix4<S> {
     pub w: Vector4<S>,
 }
 
-impl<S: Zero> Matrix2<S> {
+impl<S: ZeroPad> Matrix2<S> {
     /// Create a new matrix, providing values for each index.
     #[inline]
     pub const fn new(c0r0: S, c0r1: S, c1r0: S, c1r1: S) -> Matrix2<S> {
@@ -131,7 +131,7 @@ impl<S: BaseFloat> Matrix2<S> {
     }
 }
 
-impl<S: Zero> Matrix3<S> {
+impl<S: ZeroPad> Matrix3<S> {
     /// Create a new matrix, providing values for each index.
     #[inline]
     #[cfg_attr(rustfmt, rustfmt_skip)]
@@ -237,7 +237,7 @@ impl<S: BaseFloat> Matrix3<S> {
     }
 }
 
-impl<S: Zero> Matrix4<S> {
+impl<S: ZeroPad> Matrix4<S> {
     /// Create a new matrix, providing values for each index.
     #[inline]
     #[cfg_attr(rustfmt, rustfmt_skip)]
@@ -1154,7 +1154,7 @@ macro_rules! impl_matrix {
         impl<S: NumCast + Copy> $MatrixN<S> {
             /// Component-wise casting to another type
             #[inline]
-            pub fn cast<T: NumCast + Zero>(&self) -> Option<$MatrixN<T>> {
+            pub fn cast<T: NumCast + ZeroPad>(&self) -> Option<$MatrixN<T>> {
                 $(
                     let $field = match self.$field.cast() {
                         Some(field) => field,
@@ -1347,7 +1347,7 @@ macro_rules! fixed_array_conversions {
             }
         }
 
-        impl<$S: Copy + Zero> From<[[$S; $n]; $n]> for $MatrixN<$S> {
+        impl<$S: Copy + ZeroPad> From<[[$S; $n]; $n]> for $MatrixN<$S> {
             #[inline]
             fn from(m: [[$S; $n]; $n]) -> $MatrixN<$S> {
                 // We need to use a copy here because we can't pattern match on arrays yet

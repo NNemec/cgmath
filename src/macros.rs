@@ -173,11 +173,11 @@ macro_rules! impl_fixed_array_conversions {
             }
         }
 
-        impl<$S: Clone + Zero> From<[$S; $n]> for $ArrayN<$S> {
+        impl<$S: Clone + ZeroPad> From<[$S; $n]> for $ArrayN<$S> {
             #[inline]
             fn from(v: [$S; $n]) -> $ArrayN<$S> {
                 // We need to use a clone here because we can't pattern match on arrays yet
-                $ArrayN { $($field: v[$index].clone()),+ $(, $pad: $S::zero())* }
+                $ArrayN { $($field: v[$index].clone()),+ $(, $pad: $S::zeropad())* }
             }
         }
 
@@ -221,10 +221,10 @@ macro_rules! impl_tuple_conversions {
             }
         }
 
-        impl<$S: Zero> From<$Tuple> for $ArrayN<$S> {
+        impl<$S: ZeroPad> From<$Tuple> for $ArrayN<$S> {
             #[inline]
             fn from(v: $Tuple) -> $ArrayN<$S> {
-                match v { ($($field),+,) => $ArrayN { $($field: $field),+ $(, $pad: $S::zero())*} }
+                match v { ($($field),+,) => $ArrayN { $($field: $field),+ $(, $pad: $S::zeropad())*} }
             }
         }
 

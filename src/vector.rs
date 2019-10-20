@@ -28,7 +28,7 @@ use structure::*;
 
 use angle::Rad;
 use approx;
-use num::{BaseFloat, BaseNum};
+use num::{BaseFloat, BaseNum, ZeroPad};
 
 #[cfg(feature = "mint")]
 use mint;
@@ -94,11 +94,11 @@ pub struct Vector4<S> {
 // Utility macro for generating associated functions for the vectors
 macro_rules! impl_vector {
     ($VectorN:ident { $($field:ident),+ $(; $pad:ident )* }, $n:expr, $constructor:ident) => {
-        impl<S: Zero> $VectorN<S> {
+        impl<S: ZeroPad> $VectorN<S> {
             /// Construct a new vector, using the provided values.
             #[inline]
             pub const fn new($($field: S),+) -> $VectorN<S> {
-                $VectorN { $($field: $field),+ $(, $pad: S::zero())* }
+                $VectorN { $($field: $field),+ $(, $pad: S::zeropad())* }
             }
 
             /// Perform the given operation on each field in the vector, returning a new point
@@ -140,21 +140,21 @@ macro_rules! impl_vector {
 
         /// The short constructor.
         #[inline]
-        pub const fn $constructor<S: Zero>($($field: S),+) -> $VectorN<S> {
+        pub const fn $constructor<S: ZeroPad>($($field: S),+) -> $VectorN<S> {
             $VectorN::new($($field),+)
         }
 
         impl<S: NumCast + Copy> $VectorN<S> {
             /// Component-wise casting to another type.
             #[inline]
-            pub fn cast<T: NumCast + Zero>(&self) -> Option<$VectorN<T>> {
+            pub fn cast<T: NumCast + ZeroPad>(&self) -> Option<$VectorN<T>> {
                 $(
                     let $field = match NumCast::from(self.$field) {
                         Some(field) => field,
                         None => return None
                     };
                 )+
-                Some($VectorN { $($field: $field),+ $(, $pad: T::zero())*  })
+                Some($VectorN { $($field: $field),+ $(, $pad: T::zeropad())*  })
             }
         }
 
@@ -167,7 +167,7 @@ macro_rules! impl_vector {
             }
         }
 
-        impl<S: Copy+Zero> Array for $VectorN<S> {
+        impl<S: Copy+ZeroPad> Array for $VectorN<S> {
             type Element = S;
 
             #[inline]
@@ -177,7 +177,7 @@ macro_rules! impl_vector {
 
             #[inline]
             fn from_value(scalar: S) -> $VectorN<S> {
-                $VectorN { $($field: scalar),+ $(, $pad: S::zero())* }
+                $VectorN { $($field: scalar),+ $(, $pad: S::zeropad())* }
             }
 
             #[inline]
@@ -225,7 +225,7 @@ macro_rules! impl_vector {
             type Scalar = S;
         }
 
-        impl<S: Neg<Output = S>+Zero> Neg for $VectorN<S> {
+        impl<S: Neg<Output = S>+ZeroPad> Neg for $VectorN<S> {
             type Output = $VectorN<S>;
 
             #[inline]
@@ -280,15 +280,15 @@ macro_rules! impl_vector {
             }
         }
 
-        impl<S: Bounded + Zero> Bounded for $VectorN<S> {
+        impl<S: Bounded + ZeroPad> Bounded for $VectorN<S> {
             #[inline]
             fn min_value() -> $VectorN<S> {
-                $VectorN { $($field: S::min_value()),+ $(, $pad: S::zero() )* }
+                $VectorN { $($field: S::min_value()),+ $(, $pad: S::zeropad() )* }
             }
 
             #[inline]
             fn max_value() -> $VectorN<S> {
-                $VectorN { $($field: S::max_value()),+ $(, $pad: S::zero() )* }
+                $VectorN { $($field: S::max_value()),+ $(, $pad: S::zeropad() )* }
             }
         }
 
