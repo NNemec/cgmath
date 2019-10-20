@@ -5,6 +5,7 @@
 	.endef
 	.globl	@feat.00
 .set @feat.00, 0
+	.file	"snippets.ebx1m8nd-cgu.0"
 	.def	 snippet_vector1_add;
 	.scl	2;
 	.type	32;
@@ -105,3 +106,4 @@ snippet_m128_mul:
 	retq
 
 
+	.globl	_fltused
