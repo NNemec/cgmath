@@ -28,14 +28,11 @@ snippet_vector1_add:
 	.p2align	4, 0x90
 snippet_vector2_add:
 	movq	%rcx, %rax
-	movsd	(%rdx), %xmm0
-	movsd	(%r8), %xmm1
-	movaps	%xmm1, %xmm2
-	addss	%xmm0, %xmm2
-	shufps	$229, %xmm0, %xmm0
-	shufps	$229, %xmm1, %xmm1
-	addss	%xmm0, %xmm1
-	movss	%xmm2, (%rcx)
+	movss	(%rdx), %xmm0
+	movss	4(%rdx), %xmm1
+	addss	(%r8), %xmm0
+	addss	4(%r8), %xmm1
+	movss	%xmm0, (%rcx)
 	movss	%xmm1, 4(%rcx)
 	retq
 
@@ -51,16 +48,16 @@ snippet_vector3_add:
 	movaps	(%rdx), %xmm0
 	movaps	(%r8), %xmm1
 	movaps	%xmm0, %xmm2
-	addss	%xmm1, %xmm2
+	shufps	$229, %xmm0, %xmm2
 	movaps	%xmm0, %xmm3
-	shufps	$229, %xmm0, %xmm3
+	unpckhpd	%xmm0, %xmm3
 	movaps	%xmm1, %xmm4
 	shufps	$229, %xmm1, %xmm4
-	addss	%xmm3, %xmm4
-	movhlps	%xmm0, %xmm0
+	addss	%xmm1, %xmm0
 	movhlps	%xmm1, %xmm1
-	addss	%xmm0, %xmm1
-	movss	%xmm2, (%rcx)
+	addss	%xmm2, %xmm4
+	addss	%xmm3, %xmm1
+	movss	%xmm0, (%rcx)
 	movss	%xmm4, 4(%rcx)
 	movss	%xmm1, 8(%rcx)
 	retq
