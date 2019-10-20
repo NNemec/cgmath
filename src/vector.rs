@@ -115,6 +115,7 @@ macro_rules! impl_vector {
                 where F: FnMut(&mut S) -> ()
             {
                 $(f(&mut self.$field);)+
+                $(f(&mut self.$pad);)*
             }
 
             /// Construct a new vector where each component is the result of
@@ -133,6 +134,7 @@ macro_rules! impl_vector {
                 where F: FnMut(&mut S, S2) -> ()
             {
                 $(f(&mut self.$field, v2.$field);)+
+                $(f(&mut self.$pad, v2.$pad);)*
             }
         }
 
