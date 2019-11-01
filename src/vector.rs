@@ -97,7 +97,7 @@ macro_rules! impl_vector {
         impl<S: ZeroPad> $VectorN<S> {
             /// Construct a new vector, using the provided values.
             #[inline]
-            pub const fn new($($field: S),+) -> $VectorN<S> {
+            pub fn new($($field: S),+) -> $VectorN<S> {
                 $VectorN { $($field: $field),+ $(, $pad: S::zeropad())* }
             }
 
@@ -140,7 +140,7 @@ macro_rules! impl_vector {
 
         /// The short constructor.
         #[inline]
-        pub const fn $constructor<S: ZeroPad>($($field: S),+) -> $VectorN<S> {
+        pub fn $constructor<S: ZeroPad>($($field: S),+) -> $VectorN<S> {
             $VectorN::new($($field),+)
         }
 

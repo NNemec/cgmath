@@ -56,13 +56,13 @@ impl<S: ZeroPad> Quaternion<S> {
     /// Construct a new quaternion from one scalar component and three
     /// imaginary components.
     #[inline]
-    pub const fn new(w: S, xi: S, yj: S, zk: S) -> Quaternion<S> {
+    pub fn new(w: S, xi: S, yj: S, zk: S) -> Quaternion<S> {
         Quaternion::from_sv(w, Vector3::new(xi, yj, zk))
     }
 
     /// Construct a new quaternion from a scalar and a vector.
     #[inline]
-    pub const fn from_sv(s: S, v: Vector3<S>) -> Quaternion<S> {
+    pub fn from_sv(s: S, v: Vector3<S>) -> Quaternion<S> {
         Quaternion { s: s, v: v }
     }
 }

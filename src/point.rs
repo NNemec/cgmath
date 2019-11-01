@@ -82,7 +82,7 @@ macro_rules! impl_point {
         impl<S> $PointN<S> {
             /// Construct a new point, using the provided values.
             #[inline]
-            pub const fn new($($field: S),+) -> $PointN<S> {
+            pub fn new($($field: S),+) -> $PointN<S> {
                 $PointN { $($field: $field),+ }
             }
 
@@ -108,7 +108,7 @@ macro_rules! impl_point {
 
         /// The short constructor.
         #[inline]
-        pub const fn $constructor<S>($($field: S),+) -> $PointN<S> {
+        pub fn $constructor<S>($($field: S),+) -> $PointN<S> {
             $PointN::new($($field),+)
         }
 

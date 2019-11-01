@@ -98,7 +98,7 @@ impl<A> Euler<A> {
     /// * `x` - The angle to apply around the _x_ axis. Also known at the _pitch_.
     /// * `y` - The angle to apply around the _y_ axis. Also known at the _yaw_.
     /// * `z` - The angle to apply around the _z_ axis. Also known at the _roll_.
-    pub const fn new(x: A, y: A, z: A) -> Euler<A> {
+    pub fn new(x: A, y: A, z: A) -> Euler<A> {
         Euler { x: x, y: y, z: z }
     }
 }

@@ -87,13 +87,13 @@ pub struct Matrix4<S> {
 impl<S: ZeroPad> Matrix2<S> {
     /// Create a new matrix, providing values for each index.
     #[inline]
-    pub const fn new(c0r0: S, c0r1: S, c1r0: S, c1r1: S) -> Matrix2<S> {
+    pub fn new(c0r0: S, c0r1: S, c1r0: S, c1r1: S) -> Matrix2<S> {
         Matrix2::from_cols(Vector2::new(c0r0, c0r1), Vector2::new(c1r0, c1r1))
     }
 
     /// Create a new matrix, providing columns.
     #[inline]
-    pub const fn from_cols(c0: Vector2<S>, c1: Vector2<S>) -> Matrix2<S> {
+    pub fn from_cols(c0: Vector2<S>, c1: Vector2<S>) -> Matrix2<S> {
         Matrix2 { x: c0, y: c1 }
     }
 }
@@ -135,7 +135,7 @@ impl<S: ZeroPad> Matrix3<S> {
     /// Create a new matrix, providing values for each index.
     #[inline]
     #[cfg_attr(rustfmt, rustfmt_skip)]
-    pub const fn new(
+    pub fn new(
         c0r0:S, c0r1:S, c0r2:S,
         c1r0:S, c1r1:S, c1r2:S,
         c2r0:S, c2r1:S, c2r2:S,
@@ -149,7 +149,7 @@ impl<S: ZeroPad> Matrix3<S> {
 
     /// Create a new matrix, providing columns.
     #[inline]
-    pub const fn from_cols(c0: Vector3<S>, c1: Vector3<S>, c2: Vector3<S>) -> Matrix3<S> {
+    pub fn from_cols(c0: Vector3<S>, c1: Vector3<S>, c2: Vector3<S>) -> Matrix3<S> {
         Matrix3 {
             x: c0,
             y: c1,
@@ -241,7 +241,7 @@ impl<S: ZeroPad> Matrix4<S> {
     /// Create a new matrix, providing values for each index.
     #[inline]
     #[cfg_attr(rustfmt, rustfmt_skip)]
-    pub const fn new(
+    pub fn new(
         c0r0: S, c0r1: S, c0r2: S, c0r3: S,
         c1r0: S, c1r1: S, c1r2: S, c1r3: S,
         c2r0: S, c2r1: S, c2r2: S, c2r3: S,
@@ -257,7 +257,7 @@ impl<S: ZeroPad> Matrix4<S> {
 
     /// Create a new matrix, providing columns.
     #[inline]
-    pub const fn from_cols(c0: Vector4<S>, c1: Vector4<S>, c2: Vector4<S>, c3: Vector4<S>) -> Matrix4<S> {
+    pub fn from_cols(c0: Vector4<S>, c1: Vector4<S>, c2: Vector4<S>, c3: Vector4<S>) -> Matrix4<S> {
         Matrix4 {
             x: c0,
             y: c1,
